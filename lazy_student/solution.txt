@@ -1,0 +1,11 @@
+5 + 7 = 12.0
+2 - 4 = -2.0
+1 * 9 = 9.0
+5 / 2 = 2.5
+60 * 20 = 1200.0
+5 / 0 ERROR: cannot divide by zero
+5 + 5 + 5 ERROR: not digits in the equation
+3 + 8 = 11.0
+6 ** 3 ERROR: not a valid operation
+4 * a ERROR: not digits in the equation
+12 / 15 = 0.8
