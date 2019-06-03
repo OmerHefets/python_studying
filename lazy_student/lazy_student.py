@@ -14,9 +14,11 @@ def check_for_errors(path):
         line_index = 0
         for line in file:
             args_in_line = line.split(' ')
+            print(args_in_line)
             if len(args_in_line) != 3:
                 wrong_equation_indexes[line_index] = "too many arguments\n"
-            args_in_line[2] = args_in_line[2][:-1]
+            else:
+                args_in_line[2] = args_in_line[2][:-1]
             if not (args_in_line[0].isdigit() and args_in_line[2].isdigit()):
                 wrong_equation_indexes[line_index] = "not digits in the equation\n"
             if args_in_line[1] not in VALID_OPERATIONS:
@@ -24,6 +26,7 @@ def check_for_errors(path):
             if args_in_line[1] == '/' and args_in_line[2] == '0':
                 wrong_equation_indexes[line_index] = "cannot divide by zero\n"
             line_index += 1
+        print(wrong_equation_indexes)
         return wrong_equation_indexes
 
 
