@@ -9,6 +9,7 @@ URL_STRING = "/python/logpuzzle/"
 FOLDER_PATH = "~/programming/python/python_studying/log_puzzle"
 LOGO_FOLDER_PATH = "logo_images"
 MESSAGE_FOLDER_PATH = "message_images"
+HTML_FILENAME = "index.html"
 
 FIRST = True
 SECOND = False
@@ -48,7 +49,7 @@ def sort_urls(list_of_urls, message):
     zipped_lists = zip(list_of_words, list_of_urls)
     zipped_lists = sorted(zipped_lists)
     sorted_urls_list = [x for y, x in zipped_lists]
-    return sorted_urls_list
+    return sorted_urls_list, len(sorted_urls_list)
 
 
 def extract_word_from_url(url, first_or_second):
@@ -80,12 +81,18 @@ def download_images(sorted_urls, dest_folder):
         urllib.request.urlretrieve(url_with_prefix, filename_and_path)
 
 
-def write_html_gui():
-    pass
+def write_html_gui(images_path, num_of_images):
+    with open(HTML_FILENAME, 'a') as _:
+        # add logo images
+        add_urls_to_html(images_path=images_path, num_of_images=num_of_images)
 
 
-def add_urls_to_html():
-    pass
+def add_urls_to_html(images_path, num_of_images):
+    with open(HTML_FILENAME, 'a') as html_file:
+        for i in range(num_of_images):
+            image_html = '<img src="' + images_path + "/img" + str(i) + '.jpg">'
+            html_file.write(image_html)
+        html_file.write("\n")
 
 
 def main(download):
@@ -96,15 +103,18 @@ def main(download):
     message_urls = read_urls(message_lines)
 
     # sort urls:
-    sorted_logo_urls = sort_urls(logo_urls, message=False)
-    sorted_message_urls = sort_urls(message_urls, message=True)
+    sorted_logo_urls, num_of_logo_images = sort_urls(logo_urls, message=False)
+    sorted_message_urls, num_of_message_images = sort_urls(message_urls, message=True)
 
     # download the images:
     if download:
         download_images(sorted_message_urls, MESSAGE_FOLDER_PATH)
         download_images(sorted_logo_urls, LOGO_FOLDER_PATH)
+
     # write to the html file:
+    write_html_gui(LOGO_FOLDER_PATH, num_of_logo_images)
+    write_html_gui(MESSAGE_FOLDER_PATH, num_of_message_images)
 
 
 if __name__ == "__main__":
-    main(download=False)
+    main(download=True)
