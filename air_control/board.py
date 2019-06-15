@@ -1,7 +1,6 @@
 import pygame
 import random
-from .constants import ###
-# from planes import Plane
+from planes import Plane
 
 NUM_OF_IMAGES_PER_LINE = 10
 IMAGE_HEIGHT = 50  # pixels
@@ -35,17 +34,21 @@ def init_screen():
         pygame.draw.line(screen, BLACK, [0, current_y_location], [WINDOW_WIDTH, current_y_location], LINE_HEIGHT_PIXEL)
         pygame.display.flip()
 
-    init_game(number_of_planes=NUM_OF_PLANES)
+    init_game(number_of_planes=NUM_OF_PLANES, pygame_screen=screen)
     pygame.quit()
 
 
-def init_game(number_of_planes):
+def init_game(number_of_planes, pygame_screen):
     finish = False
     while not finish:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 finish = True
-        init_planes(number_of_planes=NUM_OF_PLANES)
+        print("lel")
+        plane_list = init_planes(number_of_planes=number_of_planes)
+        img = pygame.image.load('photos/airplane_50x50.png')
+        print("lel")
+        pygame_screen.blit(img, (0, 0))
 
 
 def init_planes(number_of_planes):
@@ -53,8 +56,15 @@ def init_planes(number_of_planes):
     Make sure that the planes do not start in the same position.
     :return:
     """
-    planes_list = pygame.sprite.Group()
-
+    planes_list = []
+    while number_of_planes > 0:
+        plane = Plane(0, 0, rand=True)
+        x_plane, y_plane = plane.get_position()
+        print(len(planes_list))
+        if not plane.check_for_collisions(planes_list, x_coor=x_plane, y_coor=y_plane):
+            planes_list.append(plane)
+            number_of_planes -= 1
+    return planes_list
 
 
 def movement_options():
